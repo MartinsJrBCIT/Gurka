@@ -46,8 +46,7 @@ void PLAYTITLE() {
     cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
     cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
     cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
-    cout << "In this multiplayer card game:" << endl;
-    cout << "Answer them correctly to win!" << endl;
+    cout << "In this card game:\nPlay against AI... (BRANDON FINISH THIS)" << endl;
     cout << "Good luck!" << endl;
 }
 
@@ -67,8 +66,8 @@ void GAMESTART(int numPlayers) {
     cout << "Game has started with " << numPlayers << " players!" << endl;
 
     // Array of all 52 cards in a French-suited deck
-    string suits[] = {"♡", "♤", "♢", "♧"};
-    string ranks[] = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"};
+    string suits[] = {" of ♡", " of ♤", " of ♢", " of ♧"};
+    string ranks[] = {"Card: 2", "Card: 3", "Card: 4", "Card: 5", "Card: 6", "Card: 7", "Card: 8", "Card: 9", "Card: 10", "Card: J", "Card: Q", "Card: K", "Card: A"};
     string deck[52];
 
     // Populate the deck
@@ -89,21 +88,22 @@ void GAMESTART(int numPlayers) {
 void simulateTurns(int numPlayers, string deck[]) {
     // Simulate turns for each player
     for (int turn = 1; turn <= numPlayers; turn++) {
-        cout << " Showing player " << turn << " Cards... Don't cheat!";
+        cout << " Showing your cards...\n\n\n ";
 
         if (turn == 1) {
-            delay(5);
-            // First player gets 5 cards
+            delay(1);
+            // player gets 5 cards
             for (int card = 0; card < 5; card++) {
                 int randomIndex = rand() % 52;
                 cout << deck[randomIndex];
-                if (card < 4) cout << ", "; // Add a comma between cards
+                if (card < 4) cout << ",\n "; // Add a comma between cards
             }
-        } else {
-            // Other players get 1 card
-            int randomIndex = rand() % 52;
-            cout << deck[randomIndex];
-        }
+        } 
+        
+        delay(1);
+
+        cout << "Choose which card to play:\n\n\n ";
+        // Simulate the player choosing a card (for now, just print the first card)
 
         cout << endl;
         delay(1); // Add a small delay between turns
