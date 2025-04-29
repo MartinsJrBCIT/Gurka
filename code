@@ -10,6 +10,7 @@ int getNumberOfPlayers();
 void GAMESTART(int numPlayers);
 void delay(int seconds);
 void simulateTurns(int numPlayers, string deck[]);
+int CHOOSEYOURCARD(int numPlayers, string deck[]);
 int main() {
     PLAYTITLE();
     cout << "Press any key to start the game..." << endl;
@@ -47,6 +48,10 @@ void PLAYTITLE() {
     cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
     cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
     cout << "In this card game:\nPlay against AI... (BRANDON FINISH THIS)" << endl;
+    cout << "Out of a stack of 52 cards, 7 out of the 52 cards will be distributed" << endl;
+    cout << "The remaining cards will be " << endl;
+    
+    
     cout << "Good luck!" << endl;
 }
 
@@ -86,29 +91,42 @@ void GAMESTART(int numPlayers) {
 }
 
 void simulateTurns(int numPlayers, string deck[]) {
-    // Simulate turns for each player
-    for (int turn = 1; turn <= numPlayers; turn++) {
-        cout << " Showing your cards...\n\n\n ";
+    // Simulate the first player's turn
+    cout << "Player 1 (You) draws: ";
+    delay(1);
 
-        if (turn == 1) {
-            delay(1);
-            // player gets 5 cards
-            for (int card = 0; card < 5; card++) {
-                int randomIndex = rand() % 52;
-                cout << deck[randomIndex];
-                if (card < 4) cout << ",\n "; // Add a comma between cards
-            }
-        } 
+         // First player gets 5 cards
+    for (int card = 0; card < 7; card++) {
+        int randomIndex = rand() % 52;
+        cout << deck[randomIndex];
+        if (card < 6) cout << ", "; // Add a comma between cards
+    }
+    cout << endl;
         
         delay(1);
 
         cout << "Choose which card to play:\n\n\n ";
-        // Simulate the player choosing a card (for now, just print the first card)
+        // Simulate the player choosing a card 
+
+
+        int CHOOSEYOURCARD(numPlayers, deck[]); 
 
         cout << endl;
         delay(1); // Add a small delay between turns
     }
-}
+
+
+    int CHOOSEYOURCARD(int numPlayers, string deck[]) {
+        int cardIndex;
+        cout << "Enter the index of the card you want to play (0-6): ";
+        cin >> cardIndex;
+        if (cardIndex < 0 || cardIndex > 6) {
+            cout << "Invalid index. Please enter a value between 0 and 6." << endl;
+            return CHOOSEYOURCARD(numPlayers, deck); // Retry if invalid input
+        }
+        cout << "You played: " << deck[cardIndex] << endl;
+        return cardIndex; // Return the chosen card index
+    }
 void delay(int seconds) {
     clock_t start_time = clock();
     while (clock() < start_time + seconds * CLOCKS_PER_SEC) {
