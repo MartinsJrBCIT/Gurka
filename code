@@ -13,27 +13,24 @@ void simulateTurns(int numPlayers, string deck[]);
 int CHOOSEYOURCARD(int numPlayers, string deck[]);
 int main() {
     PLAYTITLE();
-    cout << "Press any key to start the game..." << endl;
+    cout << "\nPress Enter to start the game..." << endl;
 
-    if (cin.get()) {
-        cout << "Starting the game..." << endl;
+    // Wait for the user to press Enter
+    cin.ignore(); // Clears the input buffer and waits for Enter
 
-        // Wait for 2 seconds
-        delay(2);
+    cout << "Starting the game..." << endl;
 
-        // Get the number of players
-        int numPlayers = getNumberOfPlayers();
+    // Wait for 2 seconds
+    delay(2);
 
-        // Start the game with the specified number of players
-        GAMESTART(numPlayers);
-    } else {
-        cout << "Error starting the game." << endl;
-        return 1;
-    }
+    // Get the number of players
+    int numPlayers = getNumberOfPlayers();
+
+    // Start the game with the specified number of players
+    GAMESTART(numPlayers);
 
     return 0;
 }
-
 void PLAYTITLE() {
     cout << "Welcome to...\n\n\n" << endl;
     cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
@@ -47,12 +44,15 @@ void PLAYTITLE() {
     cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
     cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
     cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
-    cout << "In this card game:\nPlay against AI... (BRANDON FINISH THIS)" << endl;
-    cout << "Out of a stack of 52 cards, 7 out of the 52 cards will be distributed" << endl;
-    cout << "The remaining cards will be " << endl;
-    
-    
-    cout << "Good luck!" << endl;
+
+    cout << "Welcome to the card game against AI!" << endl;
+    cout << "Each player is dealt 7 cards from a shuffled deck of 52 cards." << endl;
+    cout << "Players take turns starting with the dealer's left." << endl;
+    cout << "The goal is to have the lowest card when everyone is down to their last card." << endl;
+    cout << "Players can match or play a higher card; if unable, they must play their lowest card." << endl;
+    cout << "The winner of each round starts the next round by playing any card of their choice." << endl;
+    cout << "The game continues for 4 rounds, and the player with the lowest card at the end wins!" << endl;
+    cout << "No cheating! Have fun!" << endl;
 }
 
 int getNumberOfPlayers() {
@@ -68,7 +68,8 @@ int getNumberOfPlayers() {
 }
 
 void GAMESTART(int numPlayers) {
-    cout << "Game has started with " << numPlayers << " players!" << endl;
+
+    cout << "Game has started with " << numPlayers << " players!\n" << endl;
 
     // Array of all 52 cards in a French-suited deck
     string suits[] = {" of ♡", " of ♤", " of ♢", " of ♧"};
@@ -86,50 +87,68 @@ void GAMESTART(int numPlayers) {
     // Seed the random number generator
     srand((unsigned int)time(0));
 
+    cout << "Game starting in 3..." << endl;
+    delay(1);
+    cout << "                 2..." << endl;
+    delay(1);
+    cout << "                 1..." << endl;
+    delay(2);
+    cout << "             Game starting!\n" << endl;
+    delay(2);
+
+
+
     // Call the simulateTurns function
     simulateTurns(numPlayers, deck);
 }
 
 void simulateTurns(int numPlayers, string deck[]) {
-    // Simulate the first player's turn
-    cout << "Player 1 (You) draws: ";
-    delay(1);
 
-         // First player gets 5 cards
-    for (int card = 0; card < 7; card++) {
-        int randomIndex = rand() % 52;
-        cout << deck[randomIndex];
-        if (card < 6) cout << ", "; // Add a comma between cards
-    }
-    cout << endl;
-        
+    // Loop through each player
+    for (int player = 1; player <= numPlayers; player++) {
+        cout << "Player " << player;
+        if (player == 1) {
+            cout << " (You)";
+        }
+        cout << " draws: " << endl;
         delay(1);
 
-        cout << "Choose which card to play:\n\n\n ";
-        // Simulate the player choosing a card 
+        // Determine the number of cards each player gets
+        int cardsToDraw = (player == 1) ? 5 : 5; // First player gets 5 cards, others also get 5 cards
 
+        // Display the cards for the current player
+        for (int card = 0; card < cardsToDraw; card++) {
+            int randomIndex = rand() % 52;
+            cout << deck[randomIndex];
+            if (card < cardsToDraw - 1) cout << ", \n"; // Add a comma between cards
+        }
+        cout << endl;
 
-        int CHOOSEYOURCARD(numPlayers, deck[]); 
+        delay(1);
+
+        // If it's the first player, allow them to choose a card
+        if (player == 1) {
+            cout <<"\n(your cards)" << endl;
+            // Simulate the player choosing a card (placeholder for now)
+        } else {
+            cout << "AI Player " << player << " is thinking...\n";
+            delay(1);
+            cout << "AI Player " << player << " has played their card.\n";
+
+        }
 
         cout << endl;
-        delay(1); // Add a small delay between turns
     }
-
-
-    int CHOOSEYOURCARD(int numPlayers, string deck[]) {
-        int cardIndex;
-        cout << "Enter the index of the card you want to play (0-6): ";
-        cin >> cardIndex;
-        if (cardIndex < 0 || cardIndex > 6) {
-            cout << "Invalid index. Please enter a value between 0 and 6." << endl;
-            return CHOOSEYOURCARD(numPlayers, deck); // Retry if invalid input
-        }
-        cout << "You played: " << deck[cardIndex] << endl;
-        return cardIndex; // Return the chosen card index
-    }
+}
 void delay(int seconds) {
     clock_t start_time = clock();
     while (clock() < start_time + seconds * CLOCKS_PER_SEC) {
         // Busy-wait loop
     }
+}
+int CHOOSEYOURCARD(int numPlayers, string deck[]) {
+    int cardChoice;
+    cout << "Choose a card to play (1-" << numPlayers * 5 << "): ";
+    cin >> cardChoice;
+    return cardChoice;
 }
