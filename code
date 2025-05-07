@@ -10,7 +10,8 @@ int getNumberOfPlayers();
 void GAMESTART(int numPlayers);
 void delay(int seconds);
 void simulateTurns(int numPlayers, string deck[]);
-int CHOOSEYOURCARD(int numPlayers, string deck[]);
+int CHOOSEYOURCARD(string playerHand[], int handSize);
+
 int main() {
     PLAYTITLE();
     cout << "\nPress Enter to start the game..." << endl;
@@ -93,8 +94,9 @@ void GAMESTART(int numPlayers) {
     delay(1);
     cout << "                 1..." << endl;
     delay(2);
-    cout << "             Game starting!\n" << endl;
-    delay(2);
+    cout << "             Game starting!" << endl;
+    delay (2);
+    cout << "---------------------------------------------------------------------------\n             THE GAME's BELOW HERE BUDDY...\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" << endl;
 
 
 
@@ -103,6 +105,8 @@ void GAMESTART(int numPlayers) {
 }
 
 void simulateTurns(int numPlayers, string deck[]) {
+    string playerHand[7]; // Array to store the first player's hand
+    int deckIndex = 0;    // Index to track cards dealt from the deck
 
     // Loop through each player
     for (int player = 1; player <= numPlayers; player++) {
@@ -114,31 +118,39 @@ void simulateTurns(int numPlayers, string deck[]) {
         delay(1);
 
         // Determine the number of cards each player gets
-        int cardsToDraw = (player == 1) ? 5 : 5; // First player gets 5 cards, others also get 5 cards
+        int cardsToDraw = 7;
 
         // Display the cards for the current player
         for (int card = 0; card < cardsToDraw; card++) {
-            int randomIndex = rand() % 52;
+            int randomIndex = rand() % 52;; // Use sequential cards from the deck
+            if (player == 1) {
+                playerHand[card] = deck[randomIndex]; // Store cards in the player's hand
+            }
             cout << deck[randomIndex];
-            if (card < cardsToDraw - 1) cout << ", \n"; // Add a comma between cards
+            if (card < cardsToDraw - 1) cout << ", "; // Add a comma between cards
         }
         cout << endl;
 
         delay(1);
 
-        // If it's the first player, allow them to choose a card
-        if (player == 1) {
-            cout <<"\n(your cards)" << endl;
-            // Simulate the player choosing a card (placeholder for now)
-        } else {
+        // Simulate AI players' actions
+        if (player != 1) {
             cout << "AI Player " << player << " is thinking...\n";
             delay(1);
             cout << "AI Player " << player << " has played their card.\n";
-
+            delay(1);
         }
 
         cout << endl;
     }
+
+    // After all players' cards are displayed, allow the first player to choose a card
+    cout << "\nYour turn! Choose which card to play:\n";
+    int chosenCardIndex = CHOOSEYOURCARD(playerHand, 7);
+    cout << "You played: " << playerHand[chosenCardIndex] << endl;
+
+    delay(2);
+
 }
 void delay(int seconds) {
     clock_t start_time = clock();
@@ -146,9 +158,26 @@ void delay(int seconds) {
         // Busy-wait loop
     }
 }
-int CHOOSEYOURCARD(int numPlayers, string deck[]) {
+int CHOOSEYOURCARD(string playerHand[], int handSize) {
     int cardChoice;
-    cout << "Choose a card to play (1-" << numPlayers * 5 << "): ";
-    cin >> cardChoice;
-    return cardChoice;
+
+    // Display the player's hand
+    cout << "\nYour cards are:" << endl;
+    for (int i = 0; i < handSize; i++) {
+        cout << i + 1 << ": " << playerHand[i] << endl; // Show card index starting from 1
+    }
+
+    // Prompt the player to choose a card
+    do {
+        cout << "Choose a card to play (1-" << handSize << "): ";
+        cin >> cardChoice;
+
+        if (cardChoice < 1 || cardChoice > handSize) {
+            cout << "Invalid choice. Please choose a valid card number." << endl;
+        }
+    } while (cardChoice < 1 || cardChoice > handSize);
+
+    // Return the index of the chosen card (adjusted for 0-based indexing)
+    return cardChoice - 1;
 }
+
