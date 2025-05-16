@@ -11,10 +11,12 @@ void GAMESTART(int numPlayers);
 void delay(int seconds);
 void simulateTurns(int numPlayers, string deck[]);
 int CHOOSEYOURCARD(string playerHand[], int handSize);
+void shuffleDeck(string deck[], int size);
+int determineWinner(string playedCards[], int numPlayers);
 
 int main() {
 
-    // Seed the random number generator
+   // Seed the random number generator
     srand((unsigned int)time(0));
 
     PLAYTITLE();
@@ -78,7 +80,7 @@ void GAMESTART(int numPlayers) {
 
     // Array of all 52 cards in a French-suited deck
 string cards[] = {
-    "Card: 1 of Diamonds", "Card: 1 of Clubs", "Card: 1 of Hearts", "Card: 1 of Spades",
+
     "Card: 2 of Diamonds", "Card: 2 of Clubs", "Card: 2 of Hearts", "Card: 2 of Spades",
     "Card: 3 of Diamonds", "Card: 3 of Clubs", "Card: 3 of Hearts", "Card: 3 of Spades",
     "Card: 4 of Diamonds", "Card: 4 of Clubs", "Card: 4 of Hearts", "Card: 4 of Spades",
@@ -87,7 +89,11 @@ string cards[] = {
     "Card: 7 of Diamonds", "Card: 7 of Clubs", "Card: 7 of Hearts", "Card: 7 of Spades",
     "Card: 8 of Diamonds", "Card: 8 of Clubs", "Card: 8 of Hearts", "Card: 8 of Spades",
     "Card: 9 of Diamonds", "Card: 9 of Clubs", "Card: 9 of Hearts", "Card: 9 of Spades",
-    "Card: 10 of Diamonds", "Card: 10 of Clubs", "Card: 10 of Hearts", "Card: 10 of Spades"
+    "Card: 10 of Diamonds", "Card: 10 of Clubs", "Card: 10 of Hearts", "Card: 10 of Spades",
+    "King (Spade)", "King (Diamond)", "King (Club)", "King (Heart)",
+    "Queen (Spade)", "Queen (Diamond)", "Queen (Club)", "Queen (Heart)",
+    "Jester (Spade)", "Jester (Diamond)", "Jester (Club)", "Jester (Heart)",
+    "Ace (Spade)", "Ace (Diamond)", "Ace (Club)", "Ace (Heart)"
 };
 string deck[52];
 
@@ -99,7 +105,7 @@ for (int i = 0; i < 4; i++) { // Loop through suits
     }
 }
 
-  
+
     shuffleDeck(deck, 52);
 
     cout << "Game starting in 3..." << endl;
@@ -120,7 +126,7 @@ void simulateTurns(int numPlayers, string deck[]) {
     string playerHand[7]; // Array to store the first player's hand
     string aiHands[4][7]; // 2D array to store the hands of up to 4 AI players
     string aiPlayedCards[4]; // Array to store the cards played by AI players
-    int deckIndex = rand() % 52;       // Index to track cards dealt from the deck
+    int deckIndex = 0;       // Index to track cards dealt from the deck
 
     // Loop through each player to deal cards
     for (int player = 1; player <= numPlayers; player++) {
@@ -136,6 +142,11 @@ void simulateTurns(int numPlayers, string deck[]) {
 
         // Assign cards to the current player
         for (int card = 0; card < cardsToDraw; card++) {
+            if (deckIndex >= 52) {
+                cout << "No more cards left in the deck!" << endl;
+                return; // Exit if there are no more cards
+            }
+
             if (player == 1) {
                 playerHand[card] = deck[deckIndex]; // Store cards in the player's hand
             } else {
@@ -174,6 +185,18 @@ void simulateTurns(int numPlayers, string deck[]) {
     for (int player = 2; player <= numPlayers; player++) {
         cout << "AI Player " << player << " played: " << aiPlayedCards[player - 2] << endl;
     }
+
+    // After all players have chosen their cards
+
+string playedCards[4]; // Array to store the played cards
+
+// Store the human player's card
+playedCards[0] = playerHand[chosenCardIndex];
+
+// Store the AI players' cards
+for (int i = 1; i < numPlayers; i++) {
+    playedCards[i] = aiPlayedCards[i - 1];
+}
 }
 
 void delay(int seconds) {
@@ -211,4 +234,145 @@ void shuffleDeck(string deck[], int size) {
         int j = rand() % (i + 1); // Generate a random index
         swap(deck[i], deck[j]);  // Swap the current card with a random card
     }
+}
+
+int determineWinner(string playedCards[], int numPlayers) {
+     int cardValues[4];
+
+
+    for (int i = 0; i < numPlayers; i++) {
+        if (
+            playedCards[i] == "Card: 2 of Diamonds" ||
+            playedCards[i] == "Card: 2 of Clubs" ||
+            playedCards[i] == "Card: 2 of Hearts" ||
+            playedCards[i] == "Card: 2 of Spades"
+        )
+
+        {
+            cardValues[i] = 2;
+        }
+        else if (
+            playedCards[i] == "Card: 3 of Diamonds" ||
+            playedCards[i] == "Card: 3 of Clubs" ||
+            playedCards[i] == "Card: 3 of Hearts" ||
+            playedCards[i] == "Card: 3 of Spades"
+        )
+        {
+            cardValues[i] = 3;
+        }
+        else if (
+            playedCards[i] == "Card: 4 of Diamonds" ||
+            playedCards[i] == "Card: 4 of Clubs" ||
+            playedCards[i] == "Card: 4 of Hearts" ||
+            playedCards[i] == "Card: 4 of Spades"
+        )
+        {
+            cardValues[i] = 4;
+        }
+
+        else if (
+            playedCards[i] == "Card: 5 of Diamonds" ||
+            playedCards[i] == "Card: 5 of Clubs" ||
+            playedCards[i] == "Card: 5 of Hearts" ||
+            playedCards[i] == "Card: 5 of Spades"
+        )
+        {
+            cardValues[i] = 5;
+        }
+        else if (
+            playedCards[i] == "Card: 6 of Diamonds" ||
+            playedCards[i] == "Card: 6 of Clubs" ||
+            playedCards[i] == "Card: 6 of Hearts" ||
+            playedCards[i] == "Card: 6 of Spades"
+        )
+        {
+            cardValues[i] = 6;
+        }
+        else if (
+            playedCards[i] == "Card: 7 of Diamonds" ||
+            playedCards[i] == "Card: 7 of Clubs" ||
+            playedCards[i] == "Card: 7 of Hearts" ||
+            playedCards[i] == "Card: 7 of Spades"
+        )
+        {
+            cardValues[i] = 7;
+        }
+        else if (
+            playedCards[i] == "Card: 8 of Diamonds" ||
+            playedCards[i] == "Card: 8 of Clubs" ||
+            playedCards[i] == "Card: 8 of Hearts" ||
+            playedCards[i] == "Card: 8 of Spades"
+        )
+        {
+            cardValues[i] = 8;
+        }
+        else if (
+            playedCards[i] == "Card: 9 of Diamonds" ||
+            playedCards[i] == "Card: 9 of Clubs" ||
+            playedCards[i] == "Card: 9 of Hearts" ||
+            playedCards[i] == "Card: 9 of Spades"
+        )
+        {
+            cardValues[i] = 9;
+        }
+        else if (
+            playedCards[i] == "Card: 10 of Diamonds" ||
+            playedCards[i] == "Card: 10 of Clubs" ||
+            playedCards[i] == "Card: 10 of Hearts" ||
+            playedCards[i] == "Card: 10 of Spades"
+        )
+        {
+            cardValues[i] = 10;
+        }
+        else if (
+            playedCards[i] == "King (Spade)" ||
+            playedCards[i] == "King (Diamond)" ||
+            playedCards[i] == "King (Club)" ||
+            playedCards[i] == "King (Heart)"
+        )
+        {
+            cardValues[i] = 13;
+        }
+        else if (
+            playedCards[i] == "Queen (Spade)" ||
+            playedCards[i] == "Queen (Diamond)" ||
+            playedCards[i] == "Queen (Club)" ||
+            playedCards[i] == "Queen (Heart)"
+        )
+        {
+            cardValues[i] = 12;
+        }
+        else if (
+            playedCards[i] == "Jester (Spade)" ||
+            playedCards[i] == "Jester (Diamond)" ||
+            playedCards[i] == "Jester (Club)" ||
+            playedCards[i] == "Jester (Heart)"
+        )
+        {
+            cardValues[i] = 11;
+        }
+        else if (
+            playedCards[i] == "Ace (Spade)" ||
+            playedCards[i] == "Ace (Diamond)" ||
+            playedCards[i] == "Ace (Club)" ||
+            playedCards[i] == "Ace (Heart)"
+        ) {
+            cardValues[i] = 14;
+        } else {
+            cardValues[i] = 0; // fallback for unknown cards
+        }
+    }
+
+     // Find the highest value and the winner
+    int maxVal = cardValues[0];
+    int winner = 0;
+    for (int i = 1; i < numPlayers; i++) {
+        if (cardValues[i] > maxVal) {
+            maxVal = cardValues[i];
+            winner = i;
+        }
+}
+
+       cout << "Player " << (winner + 1) << " wins the round with " << playedCards[winner] << "!" << endl;
+    return winner; // index of the winner
 }
