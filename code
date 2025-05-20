@@ -196,7 +196,10 @@ playedCards[0] = playerHand[chosenCardIndex];
 // Store the AI players' cards
 for (int i = 1; i < numPlayers; i++) {
     playedCards[i] = aiPlayedCards[i - 1];
+
 }
+
+determineWinner(playedCards, numPlayers);
 }
 
 void delay(int seconds) {
@@ -227,6 +230,8 @@ int CHOOSEYOURCARD(string playerHand[], int handSize) {
 
     // Return the index of the chosen card (adjusted for 0-based indexing)
     return cardChoice - 1;
+
+    
 }
 
 void shuffleDeck(string deck[], int size) {
