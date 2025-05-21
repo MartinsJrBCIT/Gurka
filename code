@@ -9,10 +9,11 @@ void PLAYTITLE();
 int getNumberOfPlayers();
 void GAMESTART(int numPlayers);
 void delay(int seconds);
-void simulateTurns(int numPlayers, string deck[]);
+void simulateTurns(int numPlayers, string deck[], int playerPoints[]);
 int CHOOSEYOURCARD(string playerHand[], int handSize);
 void shuffleDeck(string deck[], int size);
 int determineWinner(string playedCards[], int numPlayers);
+
 
 int main() {
 
@@ -54,7 +55,7 @@ void PLAYTITLE() {
     cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
 
     cout << "Welcome to the card game against AI!" << endl;
-    cout << "Each player is dealt 7 cards from a shuffled deck of 52 cards." << endl;
+    cout << "Each player is dealt 6 cards from a shuffled deck of 52 cards." << endl;
     cout << "Players take turns starting with the dealer's left." << endl;
     cout << "The goal is to have the lowest card when everyone is down to their last card." << endl;
     cout << "Players can match or play a higher card; if unable, they must play their lowest card." << endl;
@@ -76,6 +77,8 @@ int getNumberOfPlayers() {
 }
 
 void GAMESTART(int numPlayers) {
+    int playerPoints[4] = {0}; // Array to store points for each player
+
     cout << "Game has started with " << numPlayers << " players!\n" << endl;
 
     // Array of all 52 cards in a French-suited deck
@@ -92,16 +95,16 @@ string cards[] = {
     "Card: 10 of Diamonds", "Card: 10 of Clubs", "Card: 10 of Hearts", "Card: 10 of Spades",
     "King (Spade)", "King (Diamond)", "King (Club)", "King (Heart)",
     "Queen (Spade)", "Queen (Diamond)", "Queen (Club)", "Queen (Heart)",
-    "Jester (Spade)", "Jester (Diamond)", "Jester (Club)", "Jester (Heart)",
+    "Jack (Spade)", "Jack (Diamond)", "Jack (Club)", "Jack (Heart)",
     "Ace (Spade)", "Ace (Diamond)", "Ace (Club)", "Ace (Heart)"
 };
 string deck[52];
 
 // Populate the deck
 int index = 0;
-for (int i = 0; i < 4; i++) { // Loop through suits
-    for (int j = 0; j < 13; j++) { // Loop through ranks
-        deck[index++] = cards[i * 13 + j]; // Calculate the correct index in the cards array
+for (int i = 0; i < 4; i++) { 
+    for (int j = 0; j < 13; j++) { 
+        deck[index++] = cards[i * 13 + j]; 
     }
 }
 
@@ -116,15 +119,15 @@ for (int i = 0; i < 4; i++) { // Loop through suits
     delay(2);
     cout << "             Game starting!" << endl;
     delay(2);
-    cout << "---------------------------------------------------------------------------\n             THE GAME's BELOW HERE BUDDY...\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" << endl;
-
+     system("cls");
+    cout << "Game has started with " << numPlayers << " players!\n" << endl;
     // Call the simulateTurns function
-    simulateTurns(numPlayers, deck);
+    simulateTurns(numPlayers, deck, playerPoints);
 }
 
-void simulateTurns(int numPlayers, string deck[]) {
-    string playerHand[7]; // Array to store the first player's hand
-    string aiHands[4][7]; // 2D array to store the hands of up to 4 AI players
+void simulateTurns(int numPlayers, string deck[], int playerPoints[]) {
+    string playerHand[6]; // Array to store the first player's hand
+    string aiHands[4][6]; // 2D array to store the hands of up to 4 AI players
     string aiPlayedCards[4]; // Array to store the cards played by AI players
     int deckIndex = 0;       // Index to track cards dealt from the deck
 
@@ -138,7 +141,7 @@ void simulateTurns(int numPlayers, string deck[]) {
         delay(1);
 
         // Determine the number of cards each player gets
-        int cardsToDraw = 7;
+        int cardsToDraw = 6;
 
         // Assign cards to the current player
         for (int card = 0; card < cardsToDraw; card++) {
@@ -167,7 +170,7 @@ void simulateTurns(int numPlayers, string deck[]) {
         delay(1);
 
         // AI picks a random card from their hand
-        int aiCardIndex = rand() % 7; // AI has 7 cards
+        int aiCardIndex = rand() % 6; // AI has 6 cards
         aiPlayedCards[player - 2] = aiHands[player - 2][aiCardIndex]; // Store the chosen card
         cout << "AI Player " << player << " has chosen their card.\n";
         delay(1);
@@ -175,15 +178,16 @@ void simulateTurns(int numPlayers, string deck[]) {
 
     // Player's turn: Choose and show their card
     cout << "\nYour turn! Choose which card to play:\n";
-    int chosenCardIndex = CHOOSEYOURCARD(playerHand, 7);
+    int chosenCardIndex = CHOOSEYOURCARD(playerHand, 6);
     cout << "You played: " << playerHand[chosenCardIndex] << endl;
 
     delay(2);
 
     // Reveal the AI players' chosen cards
-    cout << "\nAI players reveal their cards:\n";
+    cout << "\nLets see how you did against AI!\n";
     for (int player = 2; player <= numPlayers; player++) {
         cout << "AI Player " << player << " played: " << aiPlayedCards[player - 2] << endl;
+        delay(1);
     }
 
     // After all players have chosen their cards
@@ -199,7 +203,10 @@ for (int i = 1; i < numPlayers; i++) {
 
 }
 
-determineWinner(playedCards, numPlayers);
+    int winner = determineWinner(playedCards, numPlayers);
+    playerPoints[winner]++; // Increment the winner's points
+
+    cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points." << endl;
 }
 
 void delay(int seconds) {
@@ -348,10 +355,10 @@ int determineWinner(string playedCards[], int numPlayers) {
             cardValues[i] = 12;
         }
         else if (
-            playedCards[i] == "Jester (Spade)" ||
-            playedCards[i] == "Jester (Diamond)" ||
-            playedCards[i] == "Jester (Club)" ||
-            playedCards[i] == "Jester (Heart)"
+            playedCards[i] == "Jack (Spade)" ||
+            playedCards[i] == "Jack (Diamond)" ||
+            playedCards[i] == "Jack (Club)" ||
+            playedCards[i] == "Jack (Heart)"
         )
         {
             cardValues[i] = 11;
