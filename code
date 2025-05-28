@@ -9,10 +9,11 @@ void PLAYTITLE();
 int getNumberOfPlayers();
 void GAMESTART(int numPlayers);
 void delay(int seconds);
-void simulateTurns(int numPlayers, string deck[], int playerPoints[]);
+void FirstRound(int numPlayers, string deck[], int playerPoints[], int handSize);
 int CHOOSEYOURCARD(string playerHand[], int handSize);
 void shuffleDeck(string deck[], int size);
 int determineWinner(string playedCards[], int numPlayers);
+void OtherRounds( string deck[], int numPlayers, string playerHand[], string aiHands[][6], int playerPoints[], int handSize);
 
 
 int main() {
@@ -78,6 +79,8 @@ int getNumberOfPlayers() {
 
 void GAMESTART(int numPlayers) {
     int playerPoints[4] = {0}; // Array to store points for each player
+    int handSize = 6; // Number of cards each player starts with
+
 
     cout << "Game has started with " << numPlayers << " players!\n" << endl;
 
@@ -102,14 +105,16 @@ string deck[52];
 
 // Populate the deck
 int index = 0;
-for (int i = 0; i < 4; i++) { 
-    for (int j = 0; j < 13; j++) { 
-        deck[index++] = cards[i * 13 + j]; 
+for (int i = 0; i < 4; i++) {
+    for (int j = 0; j < 13; j++) {
+        deck[index++] = cards[i * 13 + j];
     }
 }
 
-
+    // Functino Shuffle the deck
     shuffleDeck(deck, 52);
+
+// start the game
 
     cout << "Game starting in 3..." << endl;
     delay(1);
@@ -119,17 +124,34 @@ for (int i = 0; i < 4; i++) {
     delay(2);
     cout << "             Game starting!" << endl;
     delay(2);
-     system("cls");
+     system("cls"); // Clear the console screen
+      cout << "\n\n" << endl;
+    cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
+    cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
+    cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
+    cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
+    cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
+    cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
+    cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
+    cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
+    cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
+    cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
+    cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
+    cout << "\n\n" << endl;
     cout << "Game has started with " << numPlayers << " players!\n" << endl;
-    // Call the simulateTurns function
-    simulateTurns(numPlayers, deck, playerPoints);
+    // Call the FirstRound function
+    FirstRound(numPlayers, deck, playerPoints, handSize);
 }
 
-void simulateTurns(int numPlayers, string deck[], int playerPoints[]) {
+void FirstRound(int numPlayers, string deck[], int playerPoints[], int handSize) {
     string playerHand[6]; // Array to store the first player's hand
     string aiHands[4][6]; // 2D array to store the hands of up to 4 AI players
     string aiPlayedCards[4]; // Array to store the cards played by AI players
+    int aiCardIndices[numPlayers - 1]; // Array to store the indices of AI players' cards
     int deckIndex = 0;       // Index to track cards dealt from the deck
+
+    cout << "Round 1: " << endl;
+    cout << "------------------" << endl;
 
     // Loop through each player to deal cards
     for (int player = 1; player <= numPlayers; player++) {
@@ -142,6 +164,7 @@ void simulateTurns(int numPlayers, string deck[], int playerPoints[]) {
 
         // Determine the number of cards each player gets
         int cardsToDraw = 6;
+
 
         // Assign cards to the current player
         for (int card = 0; card < cardsToDraw; card++) {
@@ -171,7 +194,8 @@ void simulateTurns(int numPlayers, string deck[], int playerPoints[]) {
 
         // AI picks a random card from their hand
         int aiCardIndex = rand() % 6; // AI has 6 cards
-        aiPlayedCards[player - 2] = aiHands[player - 2][aiCardIndex]; // Store the chosen card
+        aiCardIndices[player - 2] = aiCardIndex; // Store the index
+aiPlayedCards[player - 2] = aiHands[player - 2][aiCardIndex]; // Store the chosen card
         cout << "AI Player " << player << " has chosen their card.\n";
         delay(1);
     }
@@ -184,7 +208,7 @@ void simulateTurns(int numPlayers, string deck[], int playerPoints[]) {
     delay(2);
 
     // Reveal the AI players' chosen cards
-    cout << "\nLets see how you did against AI!\n";
+    cout << "\nLets see how you did against AI!\n\n";
     for (int player = 2; player <= numPlayers; player++) {
         cout << "AI Player " << player << " played: " << aiPlayedCards[player - 2] << endl;
         delay(1);
@@ -207,6 +231,24 @@ for (int i = 1; i < numPlayers; i++) {
     playerPoints[winner]++; // Increment the winner's points
 
     cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points." << endl;
+
+// Remove the played card from the human player's hand
+for (int k = chosenCardIndex; k < handSize - 1; k++)
+    playerHand[k] = playerHand[k + 1];
+
+// Remove the played card from each AI's hand
+for (int ai = 0; ai < numPlayers - 1; ai++) {
+    for (int k = aiCardIndices[ai]; k < handSize - 1; k++)
+        aiHands[ai][k] = aiHands[ai][k + 1];
+}
+
+// Decrease hand size for next round
+handSize--;
+
+delay(2);
+
+
+OtherRounds(numPlayers, deck, playerPoints, handSize);
 }
 
 void delay(int seconds) {
@@ -238,7 +280,7 @@ int CHOOSEYOURCARD(string playerHand[], int handSize) {
     // Return the index of the chosen card (adjusted for 0-based indexing)
     return cardChoice - 1;
 
-    
+
 }
 
 void shuffleDeck(string deck[], int size) {
@@ -251,7 +293,7 @@ void shuffleDeck(string deck[], int size) {
 int determineWinner(string playedCards[], int numPlayers) {
      int cardValues[4];
 
-
+// Assign values to the played cards
     for (int i = 0; i < numPlayers; i++) {
         if (
             playedCards[i] == "Card: 2 of Diamonds" ||
@@ -387,4 +429,78 @@ int determineWinner(string playedCards[], int numPlayers) {
 
        cout << "Player " << (winner + 1) << " wins the round with " << playedCards[winner] << "!" << endl;
     return winner; // index of the winner
+
+    delay(2);
+
+    void OtherRounds(int numPlayers, string playerHand[], string aiHands[][6], int playerPoints[], int handSize, string deck[], int aiCardIndices[4] );
+
+
+}
+void OtherRounds( string deck[], int numPlayers, string playerHand[], string aiHands[][6], int playerPoints[], int handSize) {
+    int aiCardIndices[4]; // To store which card each AI played
+    string aiPlayedCards[4];
+    int round = 2;
+
+    // --- DEAL CARDS ONCE ---
+    int deckIndex = 0;
+    for (int player = 1; player <= numPlayers; player++) {
+        for (int card = 0; card < handSize; card++) {
+            if (player == 1)
+                playerHand[card] = deck[deckIndex];
+            else
+                aiHands[player - 2][card] = deck[deckIndex];
+            deckIndex++;
+        }
+    }
+
+    // --- PLAY ROUNDS ---
+    while (handSize > 0) {
+        cout << "Round " << round << ": " << endl;
+
+        // AI chooses cards
+        for (int player = 2; player <= numPlayers; player++) {
+            int aiCardIndex = rand() % handSize;
+            aiCardIndices[player - 2] = aiCardIndex;
+            aiPlayedCards[player - 2] = aiHands[player - 2][aiCardIndex];
+            cout << "AI Player " << player << " has chosen their card.\n";
+            delay(1);
+        }
+
+        // Player chooses a card
+        cout << "\nYour turn! Choose which card to play:\n";
+        int chosenCardIndex = CHOOSEYOURCARD(playerHand, handSize);
+        cout << "You played: " << playerHand[chosenCardIndex] << endl;
+        delay(2);
+
+        // Reveal AI cards
+        cout << "\nLets see how you did against AI!\n\n";
+        for (int player = 2; player <= numPlayers; player++) {
+            cout << "AI Player " << player << " played: " << aiPlayedCards[player - 2] << endl;
+            delay(1);
+        }
+
+        // Store played cards
+        string playedCards[4];
+        playedCards[0] = playerHand[chosenCardIndex];
+        for (int i = 1; i < numPlayers; i++)
+            playedCards[i] = aiPlayedCards[i - 1];
+
+        // Determine winner and update points
+        int winner = determineWinner(playedCards, numPlayers);
+        playerPoints[winner]++;
+        cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points." << endl;
+
+        // Remove the played card from the human player's hand
+        for (int k = chosenCardIndex; k < handSize - 1; k++)
+            playerHand[k] = playerHand[k + 1];
+
+        // Remove the played card from each AI's hand
+        for (int ai = 0; ai < numPlayers - 1; ai++) {
+            for (int k = aiCardIndices[ai]; k < handSize - 1; k++)
+                aiHands[ai][k] = aiHands[ai][k + 1];
+        }
+
+        handSize--;
+        round++;
+    }
 }
