@@ -248,7 +248,7 @@ handSize--;
 delay(2);
 
 
-OtherRounds(numPlayers, deck, playerPoints, handSize);
+OtherRounds(deck, numPlayers, playerHand, aiHands, playerPoints, handSize);
 }
 
 void delay(int seconds) {
