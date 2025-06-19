@@ -15,508 +15,794 @@ int CHOOSEYOURCARD(const vector<string>& playerHand);
 void FirstRound(int numPlayers, vector<string>& deck, vector<int>& playerPoints, int handSize);
 void OtherRounds(vector<string>& deck, int numPlayers, vector<string>& playerHand, vector<vector<string> >& aiHands, vector<int>& playerPoints, int handSize);
 int determineWinner(const vector<string>& playedCards, int numPlayers);
+void OtherGames(vector<string>& deck, int numPlayers, vector<string>& playerHand, vector<int>& playerPoints);
+void LOOSESCREEN();
+void WINSCREEN();
+
+string cards[] = {
+	"Card: 2 of Diamonds", "Card: 2 of Clubs", "Card: 2 of Hearts", "Card: 2 of Spades",
+	"Card: 3 of Diamonds", "Card: 3 of Clubs", "Card: 3 of Hearts", "Card: 3 of Spades",
+	"Card: 4 of Diamonds", "Card: 4 of Clubs", "Card: 4 of Hearts", "Card: 4 of Spades",
+	"Card: 5 of Diamonds", "Card: 5 of Clubs", "Card: 5 of Hearts", "Card: 5 of Spades",
+	"Card: 6 of Diamonds", "Card: 6 of Clubs", "Card: 6 of Hearts", "Card: 6 of Spades",
+	"Card: 7 of Diamonds", "Card: 7 of Clubs", "Card: 7 of Hearts", "Card: 7 of Spades",
+	"Card: 8 of Diamonds", "Card: 8 of Clubs", "Card: 8 of Hearts", "Card: 8 of Spades",
+	"Card: 9 of Diamonds", "Card: 9 of Clubs", "Card: 9 of Hearts", "Card: 9 of Spades",
+	"Card: 10 of Diamonds", "Card: 10 of Clubs", "Card: 10 of Hearts", "Card: 10 of Spades",
+	"King (Spade)", "King (Diamond)", "King (Club)", "King (Heart)",
+	"Queen (Spade)", "Queen (Diamond)", "Queen (Club)", "Queen (Heart)",
+	"Jack (Spade)", "Jack (Diamond)", "Jack (Club)", "Jack (Heart)",
+	"Ace (Spade)", "Ace (Diamond)", "Ace (Club)", "Ace (Heart)"
+};
+
 
 int main() {
 
-   // Seed the random number generator
-    srand((unsigned int)time(0));
+	// Seed the random number generator
+	srand((unsigned int)time(0));
 
-    PLAYTITLE();
-    cout << "\nPress Enter to start the game..." << endl;
+	PLAYTITLE();
+	cout << "\nPress Enter to start the game..." << endl;
 
-    // Wait for the user to press Enter
-    cin.ignore(); // Clears the input buffer and waits for Enter
+	// Wait for the user to press Enter
+	cin.ignore(); // Clears the input buffer and waits for Enter
 
-    cout << "Starting the game..." << endl;
+	cout << "Starting the game..." << endl;
 
-    // Wait for 2 seconds
-    delay(2);
+	// Wait for 2 seconds
+	delay(2);
 
-    // Get the number of players
-    int numPlayers = getNumberOfPlayers();
+	// Get the number of players
+	int numPlayers = getNumberOfPlayers();
 
-    // Start the game with the specified number of players
-    GAMESTART(numPlayers);
+	// Start the game with the specified number of players
+	GAMESTART(numPlayers);
 
-    return 0;
+	return 0;
 }
 
 void PLAYTITLE() {
-    cout << "Welcome to...\n\n\n" << endl;
-    cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
-    cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
-    cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
-    cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
-    cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
-    cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
-    cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
-    cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
-    cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
-    cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
-    cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
+    system("cls");
+	cout << "Welcome to...\n\n\n" << endl;
+	cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
+	cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
+	cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
+	cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
+	cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
+	cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
+	cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
+	cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
+	cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
+	cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
+	cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
 
-    cout << "Welcome to the card game against AI!" << endl;
-    cout << "Each player is dealt 6 cards from a shuffled deck of 52 cards." << endl;
-    cout << "Players take turns starting with the dealer's left." << endl;
-    cout << "The goal is to have the lowest card when everyone is down to their last card." << endl;
-    cout << "Players can match or play a higher card; if unable, they must play their lowest card." << endl;
-    cout << "The winner of each round starts the next round by playing any card of their choice." << endl;
-    cout << "The game continues for 4 rounds, and the player with the lowest card at the end wins!" << endl;
-    cout << "No cheating! Have fun!" << endl;
+	cout << "Welcome to the card game against AI!" << endl;
+	cout << "Each player is dealt 6 cards from a shuffled deck of 52 cards." << endl;
+	cout << "Players take turns starting with the dealer's left." << endl;
+	cout << "The goal is to have the lowest card when everyone is down to their last card." << endl;
+	cout << "Players can match or play a higher card; if unable, they must play their lowest card." << endl;
+	cout << "The winner of each round starts the next round by playing any card of their choice." << endl;
+	cout << "The game continues for 4 rounds, and the player with the lowest card at the end wins!" << endl;
+	cout << "No cheating! Have fun!" << endl;
 }
 
 int getNumberOfPlayers() {
-    int numPlayers;
-    do {
-        cout << "Enter the number of players (2-4): ";
-        cin >> numPlayers;
-        if (numPlayers < 2 || numPlayers > 4) {
-            cout << "Invalid number of players. Please enter a value between 2 and 4." << endl;
-        }
-    } while (numPlayers < 2 || numPlayers > 4);
-    return numPlayers;
+	int numPlayers;
+	do {
+		cout << "Enter the number of players (2-4): ";
+		cin >> numPlayers;
+		if (numPlayers < 2 || numPlayers > 4) {
+			cout << "Invalid number of players. Please enter a value between 2 and 4." << endl;
+		}
+	} while (numPlayers < 2 || numPlayers > 4);
+	return numPlayers;
 }
 
 void GAMESTART(int numPlayers) {
-    vector<int> playerPoints(numPlayers, 0); // Array to store points for each player
-    int handSize = 6; // Number of cards each player starts with
+	vector<int> playerPoints(numPlayers, 0); // Array to store points for each player
+	int handSize = 6; // Number of cards each player starts with
 
 
-    cout << "Game has started with " << numPlayers << " players!\n" << endl;
+	cout << "Game has started with " << numPlayers << " players!\n" << endl;
 
-    // Array of all 52 cards in a French-suited deck
-string cards[] = {
-    "Card: 2 of Diamonds", "Card: 2 of Clubs", "Card: 2 of Hearts", "Card: 2 of Spades",
-    "Card: 3 of Diamonds", "Card: 3 of Clubs", "Card: 3 of Hearts", "Card: 3 of Spades",
-    "Card: 4 of Diamonds", "Card: 4 of Clubs", "Card: 4 of Hearts", "Card: 4 of Spades",
-    "Card: 5 of Diamonds", "Card: 5 of Clubs", "Card: 5 of Hearts", "Card: 5 of Spades",
-    "Card: 6 of Diamonds", "Card: 6 of Clubs", "Card: 6 of Hearts", "Card: 6 of Spades",
-    "Card: 7 of Diamonds", "Card: 7 of Clubs", "Card: 7 of Hearts", "Card: 7 of Spades",
-    "Card: 8 of Diamonds", "Card: 8 of Clubs", "Card: 8 of Hearts", "Card: 8 of Spades",
-    "Card: 9 of Diamonds", "Card: 9 of Clubs", "Card: 9 of Hearts", "Card: 9 of Spades",
-    "Card: 10 of Diamonds", "Card: 10 of Clubs", "Card: 10 of Hearts", "Card: 10 of Spades",
-    "King (Spade)", "King (Diamond)", "King (Club)", "King (Heart)",
-    "Queen (Spade)", "Queen (Diamond)", "Queen (Club)", "Queen (Heart)",
-    "Jack (Spade)", "Jack (Diamond)", "Jack (Club)", "Jack (Heart)",
-    "Ace (Spade)", "Ace (Diamond)", "Ace (Club)", "Ace (Heart)"
-};
-vector<string> deck(cards, cards + 52);
+	// Array of all 52 cards in a French-suited deck
+	string cards[] = {
+		"Card: 2 of Diamonds", "Card: 2 of Clubs", "Card: 2 of Hearts", "Card: 2 of Spades",
+		"Card: 3 of Diamonds", "Card: 3 of Clubs", "Card: 3 of Hearts", "Card: 3 of Spades",
+		"Card: 4 of Diamonds", "Card: 4 of Clubs", "Card: 4 of Hearts", "Card: 4 of Spades",
+		"Card: 5 of Diamonds", "Card: 5 of Clubs", "Card: 5 of Hearts", "Card: 5 of Spades",
+		"Card: 6 of Diamonds", "Card: 6 of Clubs", "Card: 6 of Hearts", "Card: 6 of Spades",
+		"Card: 7 of Diamonds", "Card: 7 of Clubs", "Card: 7 of Hearts", "Card: 7 of Spades",
+		"Card: 8 of Diamonds", "Card: 8 of Clubs", "Card: 8 of Hearts", "Card: 8 of Spades",
+		"Card: 9 of Diamonds", "Card: 9 of Clubs", "Card: 9 of Hearts", "Card: 9 of Spades",
+		"Card: 10 of Diamonds", "Card: 10 of Clubs", "Card: 10 of Hearts", "Card: 10 of Spades",
+		"King (Spade)", "King (Diamond)", "King (Club)", "King (Heart)",
+		"Queen (Spade)", "Queen (Diamond)", "Queen (Club)", "Queen (Heart)",
+		"Jack (Spade)", "Jack (Diamond)", "Jack (Club)", "Jack (Heart)",
+		"Ace (Spade)", "Ace (Diamond)", "Ace (Club)", "Ace (Heart)"
+	};
+	vector<string> deck(cards, cards + 52);
 
 
 // Populate the deck
-int index = 0;
-for (int i = 0; i < 4; i++) {
-    for (int j = 0; j < 13; j++) {
-        deck[index++] = cards[i * 13 + j];
-    }
-}
+	int index = 0;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 13; j++) {
+			deck[index++] = cards[i * 13 + j];
+		}
+	}
 
-    // Functino Shuffle the deck
-    shuffleDeck(deck);
+	// Functino Shuffle the deck
+	shuffleDeck(deck);
 
 // start the game
 
-    cout << "Game starting in 3..." << endl;
-    delay(1);
-    cout << "                 2..." << endl;
-    delay(1);
-    cout << "                 1..." << endl;
-    delay(2);
-    cout << "             Game starting!" << endl;
-    delay(2);
-     system("cls"); // Clear the console screen
-      cout << "\n\n" << endl;
-    cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
-    cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
-    cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
-    cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
-    cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
-    cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
-    cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
-    cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
-    cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
-    cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
-    cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
-    cout << "\n\n" << endl;
-    cout << "Game has started with " << numPlayers << " players!\n" << endl;
-    // Call the FirstRound function
-    FirstRound(numPlayers, deck, playerPoints, handSize);
+	cout << "Game starting in 3..." << endl;
+	delay(1);
+	cout << "                 2..." << endl;
+	delay(1);
+	cout << "                 1..." << endl;
+	delay(2);
+	cout << "             Game starting!" << endl;
+	delay(2);
+	system("cls"); // Clear the console screen
+	cout << "\n\n" << endl;
+	cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
+	cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
+	cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
+	cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
+	cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
+	cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
+	cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
+	cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
+	cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
+	cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
+	cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
+	cout << "\n\n" << endl;
+	cout << "Game has started with " << numPlayers << " players!\n" << endl;
+	// Call the FirstRound function
+	FirstRound(numPlayers, deck, playerPoints, handSize);
 }
 
 void FirstRound(int numPlayers, vector<string>& deck, vector<int>& playerPoints, int handSize) {
-    vector<string> playerHand(6); // vector to store the first player's hand
-    vector<vector<string> > aiHands(numPlayers - 1, vector<string>(6)); // 2D array to store the hands of up to 4 AI players
-    string aiPlayedCards[4]; // Array to store the cards played by AI players
-    int aiCardIndices[numPlayers - 1]; // Array to store the indices of AI players' cards
-    int deckIndex = 0;       // Index to track cards dealt from the deck
+	vector<string> playerHand(6); // vector to store the first player's hand
+	vector<vector<string> > aiHands(numPlayers - 1, vector<string>(6)); // 2D array to store the hands of up to 4 AI players
+	string aiPlayedCards[4]; // Array to store the cards played by AI players
+	int aiCardIndices[numPlayers - 1]; // Array to store the indices of AI players' cards
+	int deckIndex = 0;       // Index to track cards dealt from the deck
 
-    cout << "Round 1: " << endl;
-    cout << "------------------" << endl;
+	cout << "Round 1: " << endl;
+	cout << "------------------" << endl;
 
-    // Loop through each player to deal cards
-    for (int player = 1; player <= numPlayers; player++) {
-        cout << "Player " << player;
-        if (player == 1) {
-            cout << " (You)";
-        }
-        cout << " draws: " << endl;
-        delay(1);
+	// Loop through each player to deal cards
+	for (int player = 1; player <= numPlayers; player++) {
+		cout << "Player " << player;
+		if (player == 1) {
+			cout << " (You)";
+		}
+		cout << " draws: " << endl;
+		delay(1);
 
-        // Determine the number of cards each player gets
-        int cardsToDraw = 6;
-
-
-        // Assign cards to the current player
-        for (int card = 0; card < cardsToDraw; card++) {
-            if (deckIndex >= 52) {
-                cout << "No more cards left in the deck!" << endl;
-                return; // Exit if there are no more cards
-            }
-
-            if (player == 1) {
-                playerHand[card] = deck[deckIndex]; // Store cards in the player's hand
-            } else {
-                aiHands[player - 2][card] = deck[deckIndex]; // Store cards in the AI player's hand
-            }
-            cout << deck[deckIndex];
-            if (card < cardsToDraw - 1) cout << ", "; // Add a comma between cards
-            deckIndex++; // Move to the next card in the deck
-        }
-        cout << endl;
-
-        delay(1);
-    }
+		// Determine the number of cards each player gets
+		int cardsToDraw = 6;
 
 
+		// Assign cards to the current player
+		for (int card = 0; card < cardsToDraw; card++) {
+			if (deckIndex >= 52) {
+				cout << "No more cards left in the deck!" << endl;
+				return; // Exit if there are no more cards
+			}
 
-    // Player's turn: Choose and show their card
-    cout << "\nYour turn! Choose which card to play:\n";
-    int chosenCardIndex = CHOOSEYOURCARD(playerHand);
-    cout << "You played: " << playerHand[chosenCardIndex] << endl;
+			if (player == 1) {
+				playerHand[card] = deck[deckIndex]; // Store cards in the player's hand
+			} else {
+				aiHands[player - 2][card] = deck[deckIndex]; // Store cards in the AI player's hand
+			}
+			cout << deck[deckIndex];
+			if (card < cardsToDraw - 1) cout << ", "; // Add a comma between cards
+			deckIndex++; // Move to the next card in the deck
+		}
+		cout << endl;
 
-    delay(2);
+		delay(1);
+	}
 
-    // Simulate AI players' actions (choose cards but don't reveal yet)
-    for (int player = 2; player <= numPlayers; player++) {
-        cout << "AI Player " << player << " is thinking...\n";
-        delay(1);
 
-        // AI picks a random card from their hand
-        int aiCardIndex = rand() % 6; // AI has 6 cards
-        aiCardIndices[player - 2] = aiCardIndex; // Store the index
-aiPlayedCards[player - 2] = aiHands[player - 2][aiCardIndex]; // Store the chosen card
-        cout << "AI Player " << player << " has chosen their card.\n";
-        delay(1);
-    }
 
-     // Reveal the AI players' chosen cards
-    cout << "\nLets see how you did against AI!\n\n";
-    for (int player = 2; player <= numPlayers; player++) {
-        cout << "AI Player " << player << " played: " << aiPlayedCards[player - 2] << endl;
-        delay(1);
-    }
+	// Player's turn: Choose and show their card
+	cout << "\nYour turn! Choose which card to play:\n";
+	int chosenCardIndex = CHOOSEYOURCARD(playerHand);
+	cout << "You played: " << playerHand[chosenCardIndex] << endl;
 
-    // After all players have chosen their cards
+	delay(2);
 
-vector<string> playedCards(numPlayers);
+	// Simulate AI players' actions (choose cards but don't reveal yet)
+	for (int player = 2; player <= numPlayers; player++) {
+		cout << "AI Player " << player << " is thinking...\n";
+		delay(1);
+
+		// AI picks a random card from their hand
+		int aiCardIndex = rand() % 6; // AI has 6 cards
+		aiCardIndices[player - 2] = aiCardIndex; // Store the index
+		aiPlayedCards[player - 2] = aiHands[player - 2][aiCardIndex]; // Store the chosen card
+		cout << "AI Player " << player << " has chosen their card.\n";
+		delay(1);
+
+		// Reveal the AI player chosen cards
+		cout << "AI Player " << player << " played: " << aiPlayedCards[player - 2] << endl;
+		delay(1);
+	}
+
+	// Reveal the AI players' chosen cards
+	cout << "\nLets see how you did against AI!\n\n";
+
+
+	// After all players have chosen their cards
+
+	vector<string> playedCards(numPlayers);
 
 // Store the human player's card
-playedCards[0] = playerHand[chosenCardIndex];
+	playedCards[0] = playerHand[chosenCardIndex];
 
 // Store the AI players' cards
-for (int i = 1; i < numPlayers; i++) {
-    playedCards[i] = aiPlayedCards[i - 1];
+	for (int i = 1; i < numPlayers; i++) {
+		playedCards[i] = aiPlayedCards[i - 1];
 
-}
+	}
 
-    int winner = determineWinner(playedCards, numPlayers);
-    playerPoints[winner]++; // Increment the winner's points
+	int winner = determineWinner(playedCards, numPlayers);
+	playerPoints[winner]++; // Increment the winner's points
 
-    cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points." << endl;
+	cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points." << endl;
 
-    // Remove the played card from the human player's hand
-for (int k = chosenCardIndex; k < handSize - 1; k++)
-    playerHand[k] = playerHand[k + 1];
+	// Remove the played card from the player's hand
+	playerHand.erase(playerHand.begin() + chosenCardIndex);
 
 // Remove the played card from each AI's hand
-for (int ai = 0; ai < numPlayers - 1; ai++) {
-    for (int k = aiCardIndices[ai]; k < handSize - 1; k++)
-        aiHands[ai][k] = aiHands[ai][k + 1];
-}
+	for (int ai = 0; ai < numPlayers - 1; ai++) {
+		aiHands[ai].erase(aiHands[ai].begin() + aiCardIndices[ai]);
+	}
 
 // Decrease hand size for next round
-handSize--;
+	handSize--;
 
-delay(2);
+	delay(2);
 
 
-OtherRounds(deck, numPlayers, playerHand, aiHands, playerPoints, handSize);
+	OtherRounds(deck, numPlayers, playerHand, aiHands, playerPoints, handSize);
 }
 
 void delay(int seconds) {
-    clock_t start_time = clock();
-    while (clock() < start_time + seconds * CLOCKS_PER_SEC) {
-        // Busy-wait loop
-    }
+	clock_t start_time = clock();
+	while (clock() < start_time + seconds * CLOCKS_PER_SEC) {
+		// Busy-wait loop
+	}
 }
 
 int CHOOSEYOURCARD(const vector<string>& playerHand) {
-    int cardChoice;
-    int handSize = playerHand.size();
+	int cardChoice;
+	int handSize = playerHand.size();
 
-    // Display the player's hand
-    cout << "\nYour cards are:" << endl;
-    for (int i = 0; i < handSize; i++) {
-        cout << i + 1 << ": " << playerHand[i] << endl;
-    }
+	// Display the player's hand
+	cout << "\nYour cards are:" << endl;
+	for (int i = 0; i < handSize; i++) {
+		cout << i + 1 << ": " << playerHand[i] << endl;
+	}
 
 
-    // Prompt the player to choose a card
-    do {
-        cout << "Choose a card to play (1-" << handSize << "): ";
-        cin >> cardChoice;
-        if (cardChoice < 1 || cardChoice > handSize) {
-            cout << "Invalid choice. Please choose a valid card number." << endl;
-        }
-    } while (cardChoice < 1 || cardChoice > handSize);
+	// Prompt the player to choose a card
+	do {
+		cout << "Choose a card to play (1-" << handSize << "): ";
+		cin >> cardChoice;
+		if (cardChoice < 1 || cardChoice > handSize) {
+			cout << "Invalid choice. Please choose a valid card number." << endl;
+		}
+	} while (cardChoice < 1 || cardChoice > handSize);
 
-    // Return the index of the chosen card (adjusted for 0-based indexing)
-    return cardChoice - 1;
+	// Return the index of the chosen card (adjusted for 0-based indexing)
+	return cardChoice - 1;
 
 
 }
 
 void shuffleDeck(vector<string>& deck) {
-    for (int i = deck.size() - 1; i > 0; i--) {
-        int j = rand() % (i + 1);
-        swap(deck[i], deck[j]);
-    }
+	for (int i = deck.size() - 1; i > 0; i--) {
+		int j = rand() % (i + 1);
+		swap(deck[i], deck[j]);
+	}
 }
 
 int determineWinner(const vector<string>& playedCards, int numPlayers) {
-     int cardValues[4];
+	int cardValues[4];
 
 // Assign values to the played cards
-    for (int i = 0; i < numPlayers; i++) {
-        if (
-            playedCards[i] == "Card: 2 of Diamonds" ||
-            playedCards[i] == "Card: 2 of Clubs" ||
-            playedCards[i] == "Card: 2 of Hearts" ||
-            playedCards[i] == "Card: 2 of Spades"
-        )
+	for (int i = 0; i < numPlayers; i++) {
+		if (
+		    playedCards[i] == "Card: 2 of Diamonds" ||
+		    playedCards[i] == "Card: 2 of Clubs" ||
+		    playedCards[i] == "Card: 2 of Hearts" ||
+		    playedCards[i] == "Card: 2 of Spades"
+		)
 
-        {
-            cardValues[i] = 2;
-        }
-        else if (
-            playedCards[i] == "Card: 3 of Diamonds" ||
-            playedCards[i] == "Card: 3 of Clubs" ||
-            playedCards[i] == "Card: 3 of Hearts" ||
-            playedCards[i] == "Card: 3 of Spades"
-        )
-        {
-            cardValues[i] = 3;
-        }
-        else if (
-            playedCards[i] == "Card: 4 of Diamonds" ||
-            playedCards[i] == "Card: 4 of Clubs" ||
-            playedCards[i] == "Card: 4 of Hearts" ||
-            playedCards[i] == "Card: 4 of Spades"
-        )
-        {
-            cardValues[i] = 4;
-        }
+		{
+			cardValues[i] = 2;
+		}
+		else if (
+		    playedCards[i] == "Card: 3 of Diamonds" ||
+		    playedCards[i] == "Card: 3 of Clubs" ||
+		    playedCards[i] == "Card: 3 of Hearts" ||
+		    playedCards[i] == "Card: 3 of Spades"
+		)
+		{
+			cardValues[i] = 3;
+		}
+		else if (
+		    playedCards[i] == "Card: 4 of Diamonds" ||
+		    playedCards[i] == "Card: 4 of Clubs" ||
+		    playedCards[i] == "Card: 4 of Hearts" ||
+		    playedCards[i] == "Card: 4 of Spades"
+		)
+		{
+			cardValues[i] = 4;
+		}
 
-        else if (
-            playedCards[i] == "Card: 5 of Diamonds" ||
-            playedCards[i] == "Card: 5 of Clubs" ||
-            playedCards[i] == "Card: 5 of Hearts" ||
-            playedCards[i] == "Card: 5 of Spades"
-        )
-        {
-            cardValues[i] = 5;
-        }
-        else if (
-            playedCards[i] == "Card: 6 of Diamonds" ||
-            playedCards[i] == "Card: 6 of Clubs" ||
-            playedCards[i] == "Card: 6 of Hearts" ||
-            playedCards[i] == "Card: 6 of Spades"
-        )
-        {
-            cardValues[i] = 6;
-        }
-        else if (
-            playedCards[i] == "Card: 7 of Diamonds" ||
-            playedCards[i] == "Card: 7 of Clubs" ||
-            playedCards[i] == "Card: 7 of Hearts" ||
-            playedCards[i] == "Card: 7 of Spades"
-        )
-        {
-            cardValues[i] = 7;
-        }
-        else if (
-            playedCards[i] == "Card: 8 of Diamonds" ||
-            playedCards[i] == "Card: 8 of Clubs" ||
-            playedCards[i] == "Card: 8 of Hearts" ||
-            playedCards[i] == "Card: 8 of Spades"
-        )
-        {
-            cardValues[i] = 8;
-        }
-        else if (
-            playedCards[i] == "Card: 9 of Diamonds" ||
-            playedCards[i] == "Card: 9 of Clubs" ||
-            playedCards[i] == "Card: 9 of Hearts" ||
-            playedCards[i] == "Card: 9 of Spades"
-        )
-        {
-            cardValues[i] = 9;
-        }
-        else if (
-            playedCards[i] == "Card: 10 of Diamonds" ||
-            playedCards[i] == "Card: 10 of Clubs" ||
-            playedCards[i] == "Card: 10 of Hearts" ||
-            playedCards[i] == "Card: 10 of Spades"
-        )
-        {
-            cardValues[i] = 10;
-        }
-        else if (
-            playedCards[i] == "King (Spade)" ||
-            playedCards[i] == "King (Diamond)" ||
-            playedCards[i] == "King (Club)" ||
-            playedCards[i] == "King (Heart)"
-        )
-        {
-            cardValues[i] = 13;
-        }
-        else if (
-            playedCards[i] == "Queen (Spade)" ||
-            playedCards[i] == "Queen (Diamond)" ||
-            playedCards[i] == "Queen (Club)" ||
-            playedCards[i] == "Queen (Heart)"
-        )
-        {
-            cardValues[i] = 12;
-        }
-        else if (
-            playedCards[i] == "Jack (Spade)" ||
-            playedCards[i] == "Jack (Diamond)" ||
-            playedCards[i] == "Jack (Club)" ||
-            playedCards[i] == "Jack (Heart)"
-        )
-        {
-            cardValues[i] = 11;
-        }
-        else if (
-            playedCards[i] == "Ace (Spade)" ||
-            playedCards[i] == "Ace (Diamond)" ||
-            playedCards[i] == "Ace (Club)" ||
-            playedCards[i] == "Ace (Heart)"
-        ) {
-            cardValues[i] = 14;
-        } else {
-            cardValues[i] = 0; // fallback for unknown cards
-        }
-    }
+		else if (
+		    playedCards[i] == "Card: 5 of Diamonds" ||
+		    playedCards[i] == "Card: 5 of Clubs" ||
+		    playedCards[i] == "Card: 5 of Hearts" ||
+		    playedCards[i] == "Card: 5 of Spades"
+		)
+		{
+			cardValues[i] = 5;
+		}
+		else if (
+		    playedCards[i] == "Card: 6 of Diamonds" ||
+		    playedCards[i] == "Card: 6 of Clubs" ||
+		    playedCards[i] == "Card: 6 of Hearts" ||
+		    playedCards[i] == "Card: 6 of Spades"
+		)
+		{
+			cardValues[i] = 6;
+		}
+		else if (
+		    playedCards[i] == "Card: 7 of Diamonds" ||
+		    playedCards[i] == "Card: 7 of Clubs" ||
+		    playedCards[i] == "Card: 7 of Hearts" ||
+		    playedCards[i] == "Card: 7 of Spades"
+		)
+		{
+			cardValues[i] = 7;
+		}
+		else if (
+		    playedCards[i] == "Card: 8 of Diamonds" ||
+		    playedCards[i] == "Card: 8 of Clubs" ||
+		    playedCards[i] == "Card: 8 of Hearts" ||
+		    playedCards[i] == "Card: 8 of Spades"
+		)
+		{
+			cardValues[i] = 8;
+		}
+		else if (
+		    playedCards[i] == "Card: 9 of Diamonds" ||
+		    playedCards[i] == "Card: 9 of Clubs" ||
+		    playedCards[i] == "Card: 9 of Hearts" ||
+		    playedCards[i] == "Card: 9 of Spades"
+		)
+		{
+			cardValues[i] = 9;
+		}
+		else if (
+		    playedCards[i] == "Card: 10 of Diamonds" ||
+		    playedCards[i] == "Card: 10 of Clubs" ||
+		    playedCards[i] == "Card: 10 of Hearts" ||
+		    playedCards[i] == "Card: 10 of Spades"
+		)
+		{
+			cardValues[i] = 10;
+		}
+		else if (
+		    playedCards[i] == "King (Spade)" ||
+		    playedCards[i] == "King (Diamond)" ||
+		    playedCards[i] == "King (Club)" ||
+		    playedCards[i] == "King (Heart)"
+		)
+		{
+			cardValues[i] = 13;
+		}
+		else if (
+		    playedCards[i] == "Queen (Spade)" ||
+		    playedCards[i] == "Queen (Diamond)" ||
+		    playedCards[i] == "Queen (Club)" ||
+		    playedCards[i] == "Queen (Heart)"
+		)
+		{
+			cardValues[i] = 12;
+		}
+		else if (
+		    playedCards[i] == "Jack (Spade)" ||
+		    playedCards[i] == "Jack (Diamond)" ||
+		    playedCards[i] == "Jack (Club)" ||
+		    playedCards[i] == "Jack (Heart)"
+		)
+		{
+			cardValues[i] = 11;
+		}
+		else if (
+		    playedCards[i] == "Ace (Spade)" ||
+		    playedCards[i] == "Ace (Diamond)" ||
+		    playedCards[i] == "Ace (Club)" ||
+		    playedCards[i] == "Ace (Heart)"
+		) {
+			cardValues[i] = 14;
+		} else {
+			cardValues[i] = 0; // fallback for unknown cards
+		}
+	}
 
-     // Find the highest value and the winner
-    int maxVal = cardValues[0];
-    int winner = 0;
-    for (int i = 1; i < numPlayers; i++) {
-        if (cardValues[i] > maxVal) {
-            maxVal = cardValues[i];
-            winner = i;
-        }
+	// Find the highest value and the winner
+	int maxVal = cardValues[0];
+	int winner = 0;
+	for (int i = 1; i < numPlayers; i++) {
+		if (cardValues[i] > maxVal) {
+			maxVal = cardValues[i];
+			winner = i;
+		}
+	}
+
+	cout << "Player " << (winner + 1) << " wins the round with " << playedCards[winner] << "!" << endl;
+	return winner; // index of the winner
+
+	delay(2);
+
+	void OtherRounds(vector<string>& deck, int numPlayers, vector<string>& playerHand, vector<vector<string> >& aiHands, vector<int>& playerPoints, int handSize);
+
+
 }
 
-       cout << "Player " << (winner + 1) << " wins the round with " << playedCards[winner] << "!" << endl;
-    return winner; // index of the winner
-
-    delay(2);
-
-    void OtherRounds(vector<string>& deck, int numPlayers, vector<string>& playerHand, vector<vector<string> >& aiHands, vector<int>& playerPoints, int handSize);
-
-
-}
 void OtherRounds(vector<string>& deck, int numPlayers, vector<string>& playerHand, vector<vector<string> >& aiHands, vector<int>& playerPoints, int handSize) {
+	int round = 2;
+	int currentStarter = 0; // Start with player 0 (the human player)
 
-    int aiCardIndices[4]; // To store which card each AI played
-    string aiPlayedCards[4];
-    int round = 2;
+	// --- DEAL CARDS ONCE (already done in FirstRound, skip if unnecessary) ---
+	int deckIndex = 0;
+	for (int player = 1; player <= numPlayers; player++) {
+		for (int card = 0; card < handSize; card++) {
+			if (player == 1)
+				playerHand[card] = deck[deckIndex];
+			else
+				aiHands[player - 2][card] = deck[deckIndex];
+			deckIndex++;
+		}
+	}
 
-    // --- DEAL CARDS ONCE ---
-    int deckIndex = 0;
-    for (int player = 1; player <= numPlayers; player++) {
-        for (int card = 0; card < handSize; card++) {
-            if (player == 1)
-                playerHand[card] = deck[deckIndex];
-            else
-                aiHands[player - 2][card] = deck[deckIndex];
-            deckIndex++;
+	// --- PLAY ROUNDS ---
+	while (handSize > 0) {
+		cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" << endl;
+		cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
+		cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
+		cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
+		cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
+		cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
+		cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
+		cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
+		cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
+		cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
+		cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
+		cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
+		cout << "\n\n" << endl;
+
+		cout << "Round " << round << ": " << endl;
+		cout << "----------------" << endl;
+
+		vector<string> playedCards(numPlayers);
+		vector<int> originalToTurn(numPlayers); // Maps turn order to real player index
+
+		// Setup turn order based on who starts
+		for (int i = 0; i < numPlayers; i++) {
+			originalToTurn[i] = (currentStarter + i) % numPlayers;
+		}
+
+		// Each player plays a card in turn
+		for (int i = 0; i < numPlayers; i++) {
+			int playerIndex = originalToTurn[i];
+
+			if (playerIndex == 0) {
+				// Human player
+				cout << "\nYour turn! Choose which card to play:\n";
+				int chosenCardIndex = CHOOSEYOURCARD(playerHand);
+				playedCards[0] = playerHand[chosenCardIndex];
+				cout << "You played: " << playedCards[0] << endl;
+				playerHand.erase(playerHand.begin() + chosenCardIndex);
+				delay(1);
+			} else {
+				// AI player
+				int aiNum = playerIndex - 1;
+				int aiCardIndex = rand() % handSize;
+				playedCards[playerIndex] = aiHands[aiNum][aiCardIndex];
+				aiHands[aiNum].erase(aiHands[aiNum].begin() + aiCardIndex);
+				cout << "AI Player " << (playerIndex + 1) << " played: " << playedCards[playerIndex] << endl;
+				delay(1);
+			}
+		}
+
+		cout << "\nLet's see how you did against AI!\n\n";
+		delay(1);
+
+		// Determine winner
+		int winner = determineWinner(playedCards, numPlayers);
+
+// If this is the last round (last card), add the value of the card to their points
+if (handSize == 1) {
+    // Get the card that won
+    string winningCard = playedCards[winner];
+    
+    // Reuse the same logic as determineWinner to get the card value
+    int cardValue = 0;
+    if (winningCard.find("2") != string::npos) cardValue = 2;
+    else if (winningCard.find("3") != string::npos) cardValue = 3;
+    else if (winningCard.find("4") != string::npos) cardValue = 4;
+    else if (winningCard.find("5") != string::npos) cardValue = 5;
+    else if (winningCard.find("6") != string::npos) cardValue = 6;
+    else if (winningCard.find("7") != string::npos) cardValue = 7;
+    else if (winningCard.find("8") != string::npos) cardValue = 8;
+    else if (winningCard.find("9") != string::npos) cardValue = 9;
+    else if (winningCard.find("10") != string::npos) cardValue = 10;
+    else if (winningCard.find("Jack") != string::npos) cardValue = 11;
+    else if (winningCard.find("Queen") != string::npos) cardValue = 12;
+    else if (winningCard.find("King") != string::npos) cardValue = 13;
+    else if (winningCard.find("Ace") != string::npos) cardValue = 14;
+
+    cout << "Final round bonus! " << cardValue << " points added for the winning card value." << endl;
+    playerPoints[winner] += cardValue;
+} else {
+    // Normal point for winning the round
+    playerPoints[winner]++;
+}
+
+cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points." << endl;
+
+		currentStarter = winner; // Winner starts the next round
+
+		handSize--;
+		round++;
+		
+	}
+
+
+	// Next function if All cards have been played
+	OtherGames(deck, numPlayers, playerHand, playerPoints);
+}
+
+void OtherGames(vector<string>& deck, int numPlayers, vector<string>& playerHand, vector<int>& playerPoints) {
+    int game = 2;
+    int totalRounds = 6;
+    int currentStarter = 0;
+
+    while (true) {  // Infinite game loop
+        // 1. Populate and shuffle deck
+        int index = 0;
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 13; j++) {
+                deck[index++] = cards[i * 13 + j];
+            }
         }
-    }
+        shuffleDeck(deck);
 
-    // --- PLAY ROUNDS ---
-    while (handSize > 0) {
+        // 2. Prepare hands and deckIndex
+        vector<vector<string>> aiHands(numPlayers - 1, vector<string>(6));
+        playerHand.resize(6);
+        int deckIndex = 0;
+
+        cout << "Dealing cards for a new game...\n";
+        delay(1);
+
+        // Create a vector to track active players
+        vector<bool> activePlayers(numPlayers, true);  // All players start as active
+
+        // 3. Deal cards to players (only to active players)
+        for (int player = 1; player <= numPlayers; player++) {
+            if (!activePlayers[player - 1]) continue;  // Skip inactive players
+
+            cout << "Player " << player;
+            if (player == 1) cout << " (You)";
+            cout << " draws:\n";
+            delay(1);
+
+            for (int card = 0; card < 6; card++) {
+                if (deckIndex >= 52) {
+                    cout << "No more cards in deck!\n";
+                    return;  // Shouldn't happen, but just in case
+                }
+
+                if (player == 1) {
+                    playerHand[card] = deck[deckIndex];
+                } else {
+                    aiHands[player - 2][card] = deck[deckIndex];
+                }
+                cout << deck[deckIndex];
+                if (card < 5) cout << ", ";
+                deckIndex++;
+            }
+            cout << "\n";
+            delay(1);
+        }
+
+        // 4. Play 6 rounds with current hands
+        for (int round = 1; round <= totalRounds; round++) {
             cout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" << endl;
-    cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
-    cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
-    cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
-    cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
-    cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
-    cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
-    cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
-    cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
-    cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
-    cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
-    cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
-    cout << "\n\n" << endl;
-        cout << "Round " << round << ": " << endl;
-        cout << "----------------" << endl;
+            cout << " .----------------.  .----------------.  .----------------.  .----------------.  .----------------. " << endl;
+            cout << "| .--------------. || .--------------. || .--------------. || .--------------. || .--------------. |" << endl;
+            cout << "| |    ______    | || | _____  _____ | || |  _______     | || |  ___  ____   | || |      __      | |" << endl;
+            cout << "| |  .' ___  |   | || ||_   _||_   _|| || | |_   __ \\    | || | |_  ||_  _|  | || |     /  \\     | |" << endl;
+            cout << "| | / .'   \\_|   | || |  | |    | |  | || |   | |__) |   | || |   | |_/ /    | || |    / /\\ \\    | |" << endl;
+            cout << "| | | |    ____  | || |  | '    ' |  | || |   |  __ /    | || |   |  __'.    | || |   / ____ \\   | |" << endl;
+            cout << "| | \\ `.___]  _| | || |   \\ `--' /   | || |  _| |  \\ \\_  | || |  _| |  \\ \\_  | || | _/ /    \\ \\_ | |" << endl;
+            cout << "| |  `._____.'   | || |    `.__.'    | || | |____| |___| | || | |____||____| | || ||____|  |____|| |" << endl;
+            cout << "| |              | || |              | || |              | || |              | || |              | |" << endl;
+            cout << "| '--------------' || '--------------' || '--------------' || '--------------' || '--------------' |" << endl;
+            cout << " '----------------'  '----------------'  '----------------'  '----------------'  '----------------' " << endl;
+            cout << "\n\n" << endl;
 
-        // AI chooses cards
-        for (int player = 2; player <= numPlayers; player++) {
-            int aiCardIndex = rand() % handSize;
-            aiCardIndices[player - 2] = aiCardIndex;
-            aiPlayedCards[player - 2] = aiHands[player - 2][aiCardIndex];
-            cout << "AI Player " << player << " has chosen their card.\n";
+            cout << "Round " << round << "(Game "<< game <<"):\n";
+            cout << "\n------------------------------\n";
+
+            vector<string> playedCards(numPlayers);
+            vector<int> originalToTurn(numPlayers);
+
+            // Determine play order
+            for (int i = 0; i < numPlayers; i++) {
+                originalToTurn[i] = (currentStarter + i) % numPlayers;
+            }
+
+            // Play the round
+            for (int i = 0; i < numPlayers; i++) {
+                int playerIndex = originalToTurn[i];
+
+                if (!activePlayers[playerIndex]) {
+                    // Skip inactive players
+                    continue;
+                }
+
+                if (playerIndex == 0) {
+                    cout << "\nYour turn! Choose a card to play:\n";
+                    int chosenCardIndex = CHOOSEYOURCARD(playerHand);
+                    playedCards[0] = playerHand[chosenCardIndex];
+                    cout << "You played: " << playedCards[0] << endl;
+                    playerHand.erase(playerHand.begin() + chosenCardIndex);
+                } else {
+                    int aiNum = playerIndex - 1;
+                    int aiCardIndex = rand() % aiHands[aiNum].size();
+                    playedCards[playerIndex] = aiHands[aiNum][aiCardIndex];
+                    aiHands[aiNum].erase(aiHands[aiNum].begin() + aiCardIndex);
+                    cout << "AI Player " << (playerIndex + 1) << " played: " << playedCards[playerIndex] << endl;
+                }
+
+                delay(1);
+            }
+
+            cout << "\nLet's see who won the round!\n";
             delay(1);
+
+            int winner = determineWinner(playedCards, numPlayers);
+
+            // If last round, add value of card instead of just 1 point
+            if (round == totalRounds) {
+                string winningCard = playedCards[winner];
+                int cardValue = 0;
+                if (winningCard.find("2") != string::npos) cardValue = 2;
+                else if (winningCard.find("3") != string::npos) cardValue = 3;
+                else if (winningCard.find("4") != string::npos) cardValue = 4;
+                else if (winningCard.find("5") != string::npos) cardValue = 5;
+                else if (winningCard.find("6") != string::npos) cardValue = 6;
+                else if (winningCard.find("7") != string::npos) cardValue = 7;
+                else if (winningCard.find("8") != string::npos) cardValue = 8;
+                else if (winningCard.find("9") != string::npos) cardValue = 9;
+                else if (winningCard.find("10") != string::npos) cardValue = 10;
+                else if (winningCard.find("Jack") != string::npos) cardValue = 11;
+                else if (winningCard.find("Queen") != string::npos) cardValue = 12;
+                else if (winningCard.find("King") != string::npos) cardValue = 13;
+                else if (winningCard.find("Ace") != string::npos) cardValue = 14;
+
+                cout << "Final round bonus! " << cardValue << " points for the winner!\n";
+                playerPoints[winner] += cardValue;
+            } else {
+                playerPoints[winner]++;
+            }
+
+            cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points.\n";
+
+            // Check if any player has reached 30 points
+            for (int i = 0; i < numPlayers; i++) {
+                if (playerPoints[i] >= 30) {
+                    cout << "Player " << (i + 1) << " has reached 30 points and is kicked out of the game!\n";
+                    activePlayers[i] = false;  // Mark player as inactive
+                    if (i == currentStarter) {
+                        // If the current starter is kicked out, update the starter to the next active player
+                        currentStarter = (currentStarter + 1) % numPlayers;
+                        while (!activePlayers[currentStarter]) {
+                            currentStarter = (currentStarter + 1) % numPlayers;
+                        }
+                    }
+                }
+            }
+
+            // Check if Player 1 is eliminated
+            if (!activePlayers[0]) {
+                LOOSESCREEN();
+                return; //ends it cuz u lost
+            }
+
+            // Remove any players who are inactive from the game loop
+            int remainingPlayers = 0;
+            for (int i = 0; i < numPlayers; i++) {
+                if (activePlayers[i]) {
+                    remainingPlayers++;
+                }
+            }
+
+            if (remainingPlayers == 1) {
+                // If only one player remains, its you, because if u weren't the last player, you'd be seeing the loosing screen 
+                WINSCREEN();
+                return; //ends it cuz u won
+            }
+
+            currentStarter = winner;  // Set the next starter
         }
 
-        // Player chooses a card
-        cout << "\nYour turn! Choose which card to play:\n";
-        int chosenCardIndex = CHOOSEYOURCARD(playerHand);
-        cout << "You played: " << playerHand[chosenCardIndex] << endl;
+        cout << "\nGame " << game << " complete. Preparing new deck and hands...\n";
         delay(2);
-
-        // Reveal AI cards
-        cout << "\nLets see how you did against AI!\n\n";
-        for (int player = 2; player <= numPlayers; player++) {
-            cout << "AI Player " << player << " played: " << aiPlayedCards[player - 2] << endl;
-            delay(1);
-        }
-
-        // Store played cards
-        vector<string> playedCards(numPlayers);
-        playedCards[0] = playerHand[chosenCardIndex];
-        for (int i = 1; i < numPlayers; i++)
-            playedCards[i] = aiPlayedCards[i - 1];
-
-        // Determine winner and update points
-        int winner = determineWinner(playedCards, numPlayers);
-        playerPoints[winner]++;
-        cout << "Player " << (winner + 1) << " now has " << playerPoints[winner] << " points." << endl;
-
-        // Remove the played card from the player's hand
-playerHand.erase(playerHand.begin() + chosenCardIndex);
-
-// Remove the played card from each AI's hand
-for (int ai = 0; ai < numPlayers - 1; ai++) {
-    aiHands[ai].erase(aiHands[ai].begin() + aiCardIndices[ai]);
-}
-
-        handSize--;
-        round++;
+        system("cls");
+        game++;
     }
 }
+
+void LOOSESCREEN() {
+    system("cls");
+    cout << " .----------------.  .----------------.  .----------------.   .----------------.  .----------------.  .----------------.  .----------------. \n";
+    cout << "| .--------------. || .--------------. || .--------------. | | .--------------. || .--------------. || .--------------. || .--------------. |\n";
+    cout << "| |  ____  ____  | || |     ____     | || | _____  _____ | | | |   _____      | || |     ____     | || |    _______   | || |  _________   | |\n";
+    cout << "| | |_  _||_  _| | || |   .'    `.   | || ||_   _||_   _|| | | |  |_   _|     | || |   .'    `.   | || |   /  ___  |  | || | |  _   _  |  | |\n";
+    cout << "| |   \\ \\  / /   | || |  /  .--.  \\  | || |  | |    | |  | | | |    | |       | || |  /  .--.  \\  | || |  |  (__ \\_|  | || | |_/ | | \\_|  | |\n";
+    cout << "| |    \\ \\/ /    | || |  | |    | |  | || |  | '    ' |  | | | |    | |   _   | || |  | |    | |  | || |   '.___`-.   | || |     | |      | |\n";
+    cout << "| |    _|  |_    | || |  \\  `--'  /  | || |   \\ `--' /   | | | |   _| |__/ |  | || |  \\  `--'  /  | || |  |`\\____) |  | || |    _| |_     | |\n";
+    cout << "| |   |______|   | || |   `.____.'   | || |    `.__.'    | | | |  |________|  | || |   `.____.'   | || |  |_______.'  | || |   |_____|    | |\n";
+    cout << "| |              | || |              | || |              | | | |              | || |              | || |              | || |              | |\n";
+    cout << "| '--------------' || '--------------' || '--------------' | | '--------------' || '--------------' || '--------------' || '--------------' |\n";
+    cout << " '----------------'  '----------------'  '----------------'   '----------------'  '----------------'  '----------------'  '----------------' \n";
+    delay(3);
+    cout << "Wanna know why you lost?" << endl;
+    delay(3);
+    cout << "Because you did" << endl;
+    delay(4);
+    
+    
+
+}
+
+
+
+void WINSCREEN() {
+    system("cls");
+    cout << " .----------------.  .----------------.  .----------------.   .----------------.  .----------------.  .-----------------.\n";
+    cout << "| .--------------. || .--------------. || .--------------. | | .--------------. || .--------------. || .--------------. |\n";
+    cout << "| |  ____  ____  | || |     ____     | || | _____  _____ | | | | _____  _____ | || |     ____     | || | ____  _____  | |\n";
+    cout << "| | |_  _||_  _| | || |   .'    `.   | || ||_   _||_   _|| | | ||_   _||_   _|| || |   .'    `.   | || ||_   \\|_   _| | |\n";
+    cout << "| |   \\ \\  / /   | || |  /  .--.  \\  | || |  | |    | |  | | | |  | | /\\ | |  | || |  /  .--.  \\  | || |  |   \\ | |   | |\n";
+    cout << "| |    \\ \\/ /    | || |  | |    | |  | || |  | '    ' |  | | | |  | |/  \\| |  | || |  | |    | |  | || |  | |\\ \\| |   | |\n";
+    cout << "| |    _|  |_    | || |  \\  `--'  /  | || |   \\ `--' /   | | | |  |   /\\   |  | || |  \\  `--'  /  | || | _| |_\\   |_  | |\n";
+    cout << "| |   |______|   | || |   `.____.'   | || |    `.__.'    | | | |  |__/  \\__|  | || |   `.____.'   | || ||_____\\____| | |\n";
+    cout << "| |              | || |              | || |              | | | |              | || |              | || |              | |\n";
+    cout << "| '--------------' || '--------------' || '--------------' | | '--------------' || '--------------' || '--------------' |\n";
+    cout << " '----------------'  '----------------'  '----------------'   '----------------'  '----------------'  '----------------' \n";
+    delay (3);
+    cout << "I'm so proud of you" << endl;
+    delay (6);
+    cout << "Just kidding!" <<endl;
+    delay (1);
+    
+    
+   
+}
+
+
